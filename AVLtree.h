@@ -34,7 +34,7 @@ public:
 
 		Node* parent = nullptr;
 		Node* cur = _root;
-		while (cur)
+		while (cur)//走到最下端
 		{
 			if (cur->_key < key)
 			{
@@ -51,5 +51,54 @@ public:
 				return false;
 			}
 		}
-	private:
+
+
+		cur = new Node(key, value);
+		cur->_bf = 0;
+
+		if (parent->_key < key)
+		{
+			parent->_right = cur;
+		}
+		else
+		{
+			parent->_left = cur;
+		}
+
+		cur->_parent = parent;//更改新插入节点的parent
+
+		while ()
+		{
+			if (cur == parent->_right)
+			{
+				parent->_bf++;
+			}
+			else
+			{
+				parent->_bf--;
+			}
+
+			if (parent->_bf == 0)
+			{
+				break;
+			}
+			else if (parent->_bf == 1 || parent->_bf == -1)
+			{
+				// 继续往上更新
+				cur = parent;
+				parent = parent->_parent;
+			}
+			else if (parent->_bf == 2 || parent->_bf == -2)
+			{
+				// 旋转处理
+			}
+			else
+			{
+				assert(false);
+			}
+		}
+
+		return true;
+	}
+	private: 
 	};
