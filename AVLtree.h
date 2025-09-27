@@ -1,5 +1,6 @@
 #pragma once
 #include<assert.h>
+#include<utility>
 using namespace std;
 template<class K,class V>
 struct AVLtreeNode
@@ -69,8 +70,8 @@ public:
 
 		cur->_parent = parent;//更改新插入节点的parent
 
-		while ()
-		{
+		 while (parent)
+		 {
 			if (cur == parent->_right)
 			{
 				parent->_bf++;
@@ -93,18 +94,29 @@ public:
 			else if (parent->_bf == 2 || parent->_bf == -2)
 			{
 				// 旋转处理
-				if (parent->_bf == 2 && cur->_bf == 1)
+				if (parent->_bf == -2 && cur->_bf == -1)
 				{
 					RoatateR(parent);
 				}
+				else if (parent->_bf == 2 && cur->_bf == 1)
+				{
+					RotateL(parent);
+				}
+				else if (parent->_bf == -2 && cur->_bf == 1)
+				{
+					
+				}
+				
+				
 
 				break;
 			}
+			
 			else//超过2
 			{
 				assert(false);
 			}
-		}
+		 }
 
 		return true;
 	}
@@ -137,7 +149,7 @@ public:
 				{
 					parentParent->_right = subL;
 				}
-				subL->_parent=parentParent
+				subL->_parent = parentParent;
 			}
 			parent->_bf = subL->_bf = 0;
 		}
@@ -149,7 +161,8 @@ public:
 			if (subRL)
 			{
 				subRL->_left = parent;
-			}	Node* parentParent = parent->_parent;
+			}	
+			Node* parentParent = parent->_parent;
 			subR->_left = parent;
 			parent->_parent = subR;
 			if (parent == _root)
@@ -173,6 +186,67 @@ public:
 
 			subR->_bf = parent->_bf = 0;
 		
+		}
+		void RotateLR(Node* parent)
+		{
+			Node* subL = parent->_left;
+			Node* subLR = subL->_right;
+			int bf = subLR->_bf;//根据subLR的值判断插入位置
+			RoatateL(subL);
+			RoatateR(parent);
+			if (bf == 0)
+			{
+				subL->_bf = 0;
+				parent->_bf = 0;
+				subLR->_bf = 0;
+			}
+			else if (bf == 1)
+			{
+				subL->_bf = -1;
+				parent->_bf = 0;
+				subLR = 0;
+			}
+			else if(bf==-1)
+			{
+				subL->_bf = 0;
+				parent->_bf = 1;
+				subLR->_bf = 0;
+			}
+			else
+			{
+				assert(false);
+			}
+
+		}
+		void RotateRL(Node* parent)
+		{
+			Node* subR = parent->_right;
+			Node* subRL = subR->_left;
+			int bf = subRL->_bf;
+			RotateR(parent->_right);
+			RotateL(parent);
+			if (bf == 0)
+			{
+				subR->_bf = 0;
+				subRL->_bf = 0;
+				parent->_bf = 0;
+			}
+			else if (bf == 1)
+			{
+				subR->_bf = 0;
+				subRL->_bf = 0;
+				parent->_bf = -1;
+			}
+			else if (bf == -1)
+			{
+				subR->_bf = 1;
+				subRL->_bf = 0;
+				parent->_bf = 0;
+			}
+			else
+			{
+				assert(false);
+			}
 		}
 		private:
 			Node* _root = nullptr;
