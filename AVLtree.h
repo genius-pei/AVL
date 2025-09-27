@@ -268,28 +268,15 @@ public:
 				assert(false);
 			}
 		}
-		/*bool _IsBalanceTree(Node* root)
-		{
-			if (root == nullptr)
-				return true;
 
-			int leftHeight = _Height(root->_left);
-			int rightHeight = _Height(root->_right);
-			int bf = rightHeight - leftHeight;
-			if (abs(bf) >= 2 || bf != root->_bf)
-			{
-				cout << root->_kv.first << "平衡因子异常" << endl;
-				return false;
-			}
-
-			return _IsBalanceTree(root->_left)
-				&& _IsBalanceTree(root->_right);
-
-		}*/
 		void InOrder()
 		{
 			_InOrder(_root);
 		     cout << endl;
+		}
+		bool IsBalanceTree()
+		{
+			return _IsBalanceTree(_root);
 		}
 
 		private:
@@ -302,6 +289,32 @@ public:
 				cout << root->_kv.first << " ";
 				//cout << root->_kv.first << ":" << root->_kv.second << endl;
 				_InOrder(root->_right);
+			}
+			bool _IsBalanceTree(Node* root)
+			{
+				if (root == nullptr)
+					return true;
+
+				int leftHeight = _Height(root->_left);
+				int rightHeight = _Height(root->_right);
+				int bf = rightHeight - leftHeight;
+				if (abs(bf) >= 2 || bf != root->_bf)
+				{
+					cout << root->_kv.first << "平衡因子异常" << endl;
+					return false;
+				}
+
+				return _IsBalanceTree(root->_left)
+					&& _IsBalanceTree(root->_right);
+
+			}
+			int _Height(Node* root)
+			{
+				if (root == nullptr)
+					return 0;
+				int leftHeight = _Height(root->_left);
+				int rightHeight = _Height(root->_right);
+				return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
 			}
 
 			Node* _root = nullptr;
