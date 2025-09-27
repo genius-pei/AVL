@@ -1,7 +1,9 @@
 #pragma once
 #include<assert.h>
+#include<iostream>
 #include<utility>
 using namespace std;
+
 template<class K,class V>
 struct AVLtreeNode
 {
@@ -96,7 +98,7 @@ public:
 				// 旋转处理
 				if (parent->_bf == -2 && cur->_bf == -1)
 				{
-					RoatateR(parent);
+					RotateR(parent);
 				}
 				else if (parent->_bf == 2 && cur->_bf == 1)
 				{
@@ -104,7 +106,11 @@ public:
 				}
 				else if (parent->_bf == -2 && cur->_bf == 1)
 				{
-					
+					RotateLR(parent);
+				}
+				else if (parent->_bf == 2 && cur->_bf == -1)
+				{
+					RotateRL(parent);
 				}
 				
 				
@@ -121,7 +127,7 @@ public:
 		return true;
 	}
 	
-		void RoatateR(Node* parent)
+		void RotateR(Node* parent)
 		{
 			Node* subL = parent->_left;
 			Node* subLR = subL->_right;
@@ -160,7 +166,7 @@ public:
 			parent->_right = subRL;
 			if (subRL)
 			{
-				subRL->_left = parent;
+				subRL->_parent = parent;
 			}	
 			Node* parentParent = parent->_parent;
 			subR->_left = parent;
@@ -190,10 +196,16 @@ public:
 		void RotateLR(Node* parent)
 		{
 			Node* subL = parent->_left;
+			if (subL == nullptr)
+				return;
+		
 			Node* subLR = subL->_right;
+			if (subLR == nullptr)
+				return;
+
 			int bf = subLR->_bf;//根据subLR的值判断插入位置
-			RoatateL(subL);
-			RoatateR(parent);
+			RotateL(subL);
+			RotateR(parent);
 			if (bf == 0)
 			{
 				subL->_bf = 0;
@@ -204,7 +216,7 @@ public:
 			{
 				subL->_bf = -1;
 				parent->_bf = 0;
-				subLR = 0;
+				subLR->_bf= 0;
 			}
 			else if(bf==-1)
 			{
@@ -221,7 +233,15 @@ public:
 		void RotateRL(Node* parent)
 		{
 			Node* subR = parent->_right;
+			if (subR == nullptr)
+				return;
+	
 			Node* subRL = subR->_left;
+			if (subRL == nullptr)
+				return;
+
+
+
 			int bf = subRL->_bf;
 			RotateR(parent->_right);
 			RotateL(parent);
@@ -248,6 +268,41 @@ public:
 				assert(false);
 			}
 		}
+		/*bool _IsBalanceTree(Node* root)
+		{
+			if (root == nullptr)
+				return true;
+
+			int leftHeight = _Height(root->_left);
+			int rightHeight = _Height(root->_right);
+			int bf = rightHeight - leftHeight;
+			if (abs(bf) >= 2 || bf != root->_bf)
+			{
+				cout << root->_kv.first << "平衡因子异常" << endl;
+				return false;
+			}
+
+			return _IsBalanceTree(root->_left)
+				&& _IsBalanceTree(root->_right);
+
+		}*/
+		void InOrder()
+		{
+			_InOrder(_root);
+		     cout << endl;
+		}
+
 		private:
+			void _InOrder(Node* root)
+			{
+				if (root == nullptr)
+					return;
+
+				_InOrder(root->_left);
+				cout << root->_kv.first << " ";
+				//cout << root->_kv.first << ":" << root->_kv.second << endl;
+				_InOrder(root->_right);
+			}
+
 			Node* _root = nullptr;
 	};
