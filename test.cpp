@@ -18,7 +18,7 @@ void test01()
 
 		t.Insert({ e, e });
 		t.InOrder();
-		/*cout << "Insert:" << e << "->" << t.IsBalanceTree() << endl;*/
+		cout << "Insert:" << e << "->" << t.IsBalanceTree() << endl;
 	}
 	//t.InOrder();
 	//cout << t._IsBalanceTree() << endl;
