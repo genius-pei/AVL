@@ -2,6 +2,7 @@
 #include<assert.h>
 #include<iostream>
 #include<utility>
+#include<cstdlib>
 using namespace std;
 
 template<class K,class V>
@@ -278,6 +279,10 @@ public:
 		{
 			return _IsBalanceTree(_root);
 		}
+		int Size()
+		{
+			return _Size(_root);
+		}
 
 		private:
 			void _InOrder(Node* root)
@@ -315,6 +320,10 @@ public:
 				int leftHeight = _Height(root->_left);
 				int rightHeight = _Height(root->_right);
 				return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+			}
+			int _Size(Node* root)
+			{
+				return root == nullptr ? 0 : _Size(root->_left) + _Size(root->_right) + 1;
 			}
 
 			Node* _root = nullptr;
