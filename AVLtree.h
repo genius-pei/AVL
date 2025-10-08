@@ -283,6 +283,27 @@ public:
 		{
 			return _Size(_root);
 		}
+		Node* Find(const K& key)
+		{
+			Node* cur = _root;
+			while (cur)
+				{
+				if (cur->_kv.first < key)
+				{
+					cur = cur->_right;
+				}
+				else if (cur->_kv.first > key)
+				{
+					cur = cur->_left;
+				}
+				else
+				{
+					return cur;
+				}
+			}
+			return nullptr;
+		}
+
 
 		private:
 			void _InOrder(Node* root)
